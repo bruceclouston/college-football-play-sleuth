@@ -14,3 +14,5 @@ resources:
       permissions:
         - service_principal_name: ${bundle.target}.cfb-play-sleuth
           level: CAN_MANAGE
+        - group_name: users
+          level: CAN_USE

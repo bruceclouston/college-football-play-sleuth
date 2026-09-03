@@ -1,0 +1,83 @@
+<svg viewBox="0 0 220 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Detective blob mascot">
+  <defs>
+    <linearGradient id="blobFill" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#6d28d9" />
+    </linearGradient>
+    <radialGradient id="blobHighlight" cx="35%" cy="28%" r="45%">
+      <stop offset="0%" stop-color="#c084fc" stop-opacity="0.55" />
+      <stop offset="100%" stop-color="#c084fc" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <!-- feet -->
+  <ellipse cx="78" cy="215" rx="22" ry="13" fill="#5b21b6" />
+  <ellipse cx="142" cy="215" rx="22" ry="13" fill="#5b21b6" />
+
+  <!-- body -->
+  <path d="M110 42
+           C 165 42 196 78 198 128
+           C 200 176 168 212 110 212
+           C 52 212 20 176 22 128
+           C 24 78 55 42 110 42 Z"
+        fill="url(#blobFill)" />
+  <path d="M110 42
+           C 165 42 196 78 198 128
+           C 200 176 168 212 110 212
+           C 52 212 20 176 22 128
+           C 24 78 55 42 110 42 Z"
+        fill="url(#blobHighlight)" />
+
+  <!-- stub arm holding magnifying glass -->
+  <path d="M182 152 C 202 158 214 146 210 130" stroke="#6d28d9" stroke-width="16" stroke-linecap="round" fill="none" />
+
+  <!-- magnifying glass, held out at arm height (clear of the hat) -->
+  <g transform="translate(214,118) rotate(25)">
+    <circle r="26" fill="#eef2ff" stroke="#facc15" stroke-width="7" />
+    <line x1="18" y1="18" x2="42" y2="42" stroke="#facc15" stroke-width="9" stroke-linecap="round" />
+  </g>
+
+  <!-- deerstalker: front + back peaks, tied-up earflaps on top -->
+  <path d="M32 74
+           C 34 6 186 6 188 74
+           L 190 64
+           C 142 34 78 34 30 64 Z"
+        fill="#8b5e34" />
+  <path d="M30 64
+           C 78 34 142 34 190 64
+           L 186 76
+           C 140 50 80 50 34 76 Z"
+        fill="#6b4423" />
+  <!-- front peak -->
+  <path d="M32 66 C 14 62 0 74 4 94 C 18 88 30 78 38 70 Z" fill="#8b5e34" />
+  <path d="M32 66 C 20 65 8 74 6 88 C 16 84 26 77 34 71 Z" fill="#6b4423" />
+  <!-- back peak -->
+  <path d="M188 66 C 206 62 220 74 216 94 C 202 88 190 78 182 70 Z" fill="#8b5e34" />
+  <path d="M188 66 C 200 65 212 74 214 88 C 204 84 194 77 186 71 Z" fill="#6b4423" />
+  <!-- tied-up earflaps -->
+  <ellipse cx="90" cy="16" rx="12" ry="22" fill="#8b5e34" transform="rotate(-18 90 16)" />
+  <ellipse cx="130" cy="16" rx="12" ry="22" fill="#8b5e34" transform="rotate(18 130 16)" />
+  <ellipse cx="90" cy="16" rx="6" ry="16" fill="#6b4423" transform="rotate(-18 90 16)" />
+  <ellipse cx="130" cy="16" rx="6" ry="16" fill="#6b4423" transform="rotate(18 130 16)" />
+  <circle cx="110" cy="24" r="9" fill="#6b4423" />
+
+  <!-- eyebrows -->
+  <path d="M64 108 Q 80 96 96 106" stroke="#4c1d95" stroke-width="6" stroke-linecap="round" fill="none" />
+  <path d="M124 106 Q 140 96 156 108" stroke="#4c1d95" stroke-width="6" stroke-linecap="round" fill="none" />
+
+  <!-- eyes -->
+  <ellipse cx="80" cy="126" rx="20" ry="24" fill="#ffffff" />
+  <ellipse cx="140" cy="126" rx="20" ry="24" fill="#ffffff" />
+  <circle cx="86" cy="130" r="9" fill="#1e1b2e" />
+  <circle cx="146" cy="130" r="9" fill="#1e1b2e" />
+  <circle cx="89" cy="126" r="3" fill="#ffffff" />
+  <circle cx="149" cy="126" r="3" fill="#ffffff" />
+
+  <!-- curly handlebar mustache -->
+  <path d="M110 174 C 100 168 90 168 82 172 C 70 178 55 176 46 164
+           C 52 176 66 182 80 180 C 90 178 98 180 106 184
+           C 108 180 109 177 110 174 Z" fill="#2a2438" />
+  <path d="M110 174 C 120 168 130 168 138 172 C 150 178 165 176 174 164
+           C 168 176 154 182 140 180 C 130 178 122 180 114 184
+           C 112 180 111 177 110 174 Z" fill="#2a2438" />
+</svg>

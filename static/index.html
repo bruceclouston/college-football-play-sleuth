@@ -7,79 +7,86 @@
 <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
-  <header>
-    <h1>🕵️ College Football Play Sleuth</h1>
-    <p class="subtitle">Query college-football play-by-play: any play type (or set of types), an optional yardage floor, and an optional penalty-only view with team attribution.</p>
-  </header>
+  <div class="page">
+    <header>
+      <img src="/static/mascot.svg" alt="Detective blob mascot" class="mascot" />
+      <div class="heading">
+        <h1>College Football Play Sleuth</h1>
+        <p class="subtitle">Query college-football play-by-play: any play type (or set of types), an optional yardage floor, and an optional penalty-only view with team attribution.</p>
+      </div>
+    </header>
 
-  <form id="search-form">
-    <div class="field">
-      <label for="year">Year</label>
-      <input type="number" id="year" name="year" value="2025" required />
-    </div>
-    <div class="field">
-      <label for="week">Week</label>
-      <input type="number" id="week" name="week" value="1" min="0" max="20" required />
-    </div>
-    <div class="field">
-      <label for="season_type">Season</label>
-      <select id="season_type" name="season_type">
-        <option value="regular" selected>Regular</option>
-        <option value="postseason">Postseason</option>
-      </select>
-    </div>
-    <div class="field">
-      <label for="classification">Division</label>
-      <select id="classification" name="classification">
-        <option value="">All</option>
-        <option value="fbs">FBS</option>
-        <option value="fcs">FCS</option>
-        <option value="ii">II</option>
-        <option value="iii">III</option>
-      </select>
-    </div>
-    <div class="field play-types">
-      <label for="play_type">Play type(s) <span class="hint">(ctrl/cmd-click for more than one; none = any)</span></label>
-      <select id="play_type" name="play_type" multiple size="6"></select>
-    </div>
-    <div class="field">
-      <label for="min_yards">Min yards gained</label>
-      <input type="number" id="min_yards" name="min_yards" placeholder="e.g. 50" />
-    </div>
-    <div class="field checkbox-field">
-      <label><input type="checkbox" id="penalty_only" name="penalty_only" /> Only plays with a penalty (attributes offense/defense)</label>
-    </div>
-    <div class="field actions">
-      <button type="submit" id="find-btn">Run query</button>
-      <button type="button" id="csv-btn">Download CSV</button>
-    </div>
-  </form>
+    <form id="search-form" class="card">
+      <div class="field">
+        <label for="year">Year</label>
+        <input type="number" id="year" name="year" value="2025" required />
+      </div>
+      <div class="field">
+        <label for="week">Week</label>
+        <input type="number" id="week" name="week" value="1" min="0" max="20" required />
+      </div>
+      <div class="field">
+        <label for="season_type">Season</label>
+        <select id="season_type" name="season_type">
+          <option value="regular" selected>Regular</option>
+          <option value="postseason">Postseason</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="classification">Division</label>
+        <select id="classification" name="classification">
+          <option value="">All</option>
+          <option value="fbs">FBS</option>
+          <option value="fcs">FCS</option>
+          <option value="ii">II</option>
+          <option value="iii">III</option>
+        </select>
+      </div>
+      <div class="field play-types">
+        <label for="play_type">Play type(s) <span class="hint">(ctrl/cmd-click for more than one; none = any)</span></label>
+        <select id="play_type" name="play_type" multiple size="6"></select>
+      </div>
+      <div class="field">
+        <label for="min_yards">Min yards gained</label>
+        <input type="number" id="min_yards" name="min_yards" placeholder="e.g. 50" />
+      </div>
+      <div class="field checkbox-field">
+        <label><input type="checkbox" id="penalty_only" name="penalty_only" /> Only plays with a penalty (attributes offense/defense)</label>
+      </div>
+      <div class="field actions">
+        <button type="submit" id="find-btn">Run query</button>
+        <button type="button" id="csv-btn" class="secondary">Download CSV</button>
+      </div>
+    </form>
 
-  <p class="note">Note: CFBD gives FBS its own <strong>week 0</strong> for the season-opening slate in late August. Standalone "Penalty" plays aren't reliably linked to a following play type, so penalty attribution only counts penalties embedded in the selected play type's own text.</p>
+    <p class="note">Note: CFBD gives FBS its own <strong>week 0</strong> for the season-opening slate in late August. Standalone "Penalty" plays aren't reliably linked to a following play type, so penalty attribution only counts penalties embedded in the selected play type's own text.</p>
 
-  <section id="status"></section>
+    <section id="status"></section>
 
-  <section id="summary" class="summary hidden">
-    <div class="stat"><span class="count" id="count-offense">0</span><span class="label">Offense flagged</span></div>
-    <div class="stat"><span class="count" id="count-defense">0</span><span class="label">Defense flagged</span></div>
-    <div class="stat"><span class="count" id="count-unattributed">0</span><span class="label">Unattributed</span></div>
-  </section>
+    <section id="summary" class="summary hidden">
+      <div class="stat offense"><span class="count" id="count-offense">0</span><span class="label">Offense flagged</span></div>
+      <div class="stat defense"><span class="count" id="count-defense">0</span><span class="label">Defense flagged</span></div>
+      <div class="stat unattributed"><span class="count" id="count-unattributed">0</span><span class="label">Unattributed</span></div>
+    </section>
 
-  <table id="results-table" class="hidden">
-    <thead>
-      <tr>
-        <th>Qtr</th>
-        <th>Clock</th>
-        <th>Offense</th>
-        <th>Defense</th>
-        <th>Type</th>
-        <th>Yds</th>
-        <th class="flagged-col hidden">Flagged</th>
-        <th>Play text</th>
-      </tr>
-    </thead>
-    <tbody id="results-body"></tbody>
-  </table>
+    <div class="table-scroll">
+      <table id="results-table" class="hidden">
+        <thead>
+          <tr>
+            <th>Qtr</th>
+            <th>Clock</th>
+            <th>Offense</th>
+            <th>Defense</th>
+            <th>Type</th>
+            <th>Yds</th>
+            <th class="flagged-col hidden">Flagged</th>
+            <th>Play text</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </div>
+  </div>
 
   <script src="/static/app.js"></script>
 </body>
