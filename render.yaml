@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: college-football-play-sleuth
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn server.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: CFBD_API_KEY
+        sync: false
