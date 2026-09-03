@@ -1,0 +1,15 @@
+variables:
+  job_tags:
+    type: complex
+    default:
+      org: sports
+      domain: sportsbook
+      bu: sportsbook
+      priority: P4
+      regulated_sox: "false"
+      workspace: analytics
+      env: sandbox
+      vertical: sports_modeling_and_innovation
+      team: risk_and_trading
+      team_email: TBD
+      persona: analytics

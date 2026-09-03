@@ -1,0 +1,6 @@
+command:
+  - python
+  - app.py
+env:
+  - name: CFBD_API_KEY
+    valueFrom: cfbd-api-key

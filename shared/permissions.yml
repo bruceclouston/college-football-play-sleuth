@@ -1,0 +1,4 @@
+variables:
+  permissions:
+    type: complex
+    default: []

@@ -90,3 +90,44 @@ requests to CFBD will fail with `CERTIFICATE_VERIFY_FAILED` because the
 intercepting root CA isn't in the bundled `certifi` trust store (it is trusted
 by Windows, though). `server/cfbd_client.py` works around this with the
 `truststore` package, which points `httpx` at the OS trust store instead.
+
+## Deployment (Databricks Apps)
+
+Live at: https://cfb-play-sleuth-2283893114343682.aws.databricksapps.com
+(requires FanDuel SSO — anyone on the corp network with access to the
+`fdg-analytics` workspace can open it).
+
+This is a Databricks Asset Bundle (DAB), deployed as a plain Databricks App —
+no SQL warehouse or Unity Catalog access, since this app never touches
+Databricks data. Structure:
+
+- `app.py` / `app.yaml` — the app's own runtime entry point and command
+  (`python app.py`, which reads `DATABRICKS_APP_PORT` and runs uvicorn bound to
+  `0.0.0.0`). `app.yaml` also declares the `CFBD_API_KEY` env var, injected from
+  a Databricks secret via `valueFrom: cfbd-api-key`.
+- `resources/cfb_play_sleuth.app.yml` — the bundle's app resource definition,
+  including the `cfbd-api-key` secret resource (scope `cfb_play_sleuth`, key
+  `cfbd_api_key`, `READ` permission).
+- `databricks.yml`, `shared/`, `pyproject.toml`, `src/`, `notebooks/`, `tests/`,
+  `fixtures/`, `.vscode/` — standard SMI/FanDuel DAB project scaffold. Not used
+  by the running app itself, but kept for consistency with the org's bundle
+  conventions.
+
+### Redeploying after a code change
+
+```
+databricks bundle deploy
+databricks bundle run cfb-play-sleuth
+```
+
+`deploy` uploads the code; `run` is required afterward to actually apply the
+new deployment and (re)start the app — `deploy` alone does not restart it.
+
+### Rotating the CFBD API key
+
+```
+databricks secrets put-secret --json '{"scope": "cfb_play_sleuth", "key": "cfbd_api_key", "string_value": "<new-key>"}'
+```
+
+Then restart the app (`databricks bundle run cfb-play-sleuth`) for it to pick
+up the new value — env vars are only re-injected on start.

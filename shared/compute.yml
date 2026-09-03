@@ -1,0 +1,21 @@
+variables:
+  cluster_policy_id:
+    description: "Cluster policy ID used to create job clusters"
+    default: "000596F797CA6616"
+
+  cluster_name:
+    description: "Cluster Name"
+    default: ""
+
+  job_cluster_base:
+    type: complex
+    default:
+      cluster_name: ${var.cluster_name}
+      apply_policy_default_values: true
+      spark_env_vars:
+        PIP_EXTRA_INDEX_URL: https://pypi-internal.east.fdbox.net/simple
+        PYSPARK_PYTHON: /databricks/python3/bin/python3
+      policy_id: ${var.cluster_policy_id}
+      autoscale:
+        min_workers: 1
+        max_workers: 6

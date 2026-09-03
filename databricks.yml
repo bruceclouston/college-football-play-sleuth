@@ -1,0 +1,25 @@
+bundle:
+  name: college_football_play_sleuth
+  uuid: fb832d7f-0553-4a8d-a081-4ad2135abcb3
+
+include:
+  - resources/*.yml
+  - shared/*.yml
+
+artifacts:
+  python_artifact:
+    type: whl
+    build: uv build --wheel
+
+workspace:
+  root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://fdg-analytics.cloud.databricks.com
+    permissions: ${var.permissions}
+    presets:
+      artifacts_dynamic_version: true

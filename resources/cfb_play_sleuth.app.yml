@@ -1,0 +1,16 @@
+resources:
+  apps:
+    cfb-play-sleuth:
+      name: cfb-play-sleuth
+      source_code_path: ..
+      description: "Query CFBD college-football play-by-play by play type, yardage floor, and penalty attribution"
+      resources:
+        - name: "cfbd-api-key"
+          description: "CFBD API key for server-side play-by-play requests"
+          secret:
+            scope: cfb_play_sleuth
+            key: cfbd_api_key
+            permission: "READ"
+      permissions:
+        - service_principal_name: ${bundle.target}.cfb-play-sleuth
+          level: CAN_MANAGE
