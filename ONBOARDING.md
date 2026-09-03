@@ -19,6 +19,68 @@ defense by parsing the play text. Runs as a small FastAPI server + a plain
 HTML/JS frontend, deployed as a Databricks App so it's internal-only and
 shareable with a URL — no third-party hosting, no plaintext secrets.
 
+## Dependencies (have these ready before you start)
+
+**Accounts / access**
+- A GitHub account, added as a collaborator on this repo (ask Bruce), so you
+  can fork or branch from working code instead of starting blank.
+- A Databricks account with access to the `fdg-analytics` workspace, and a
+  working `DEFAULT` profile (`databricks auth login` — if that fails, run the
+  `smi-core:databricks-doctor` skill first).
+- An API key (or internal data access) for your sport's data source — see
+  "Step 0" below. If it's an external API, sign up for a key before writing
+  any code.
+
+**Tools (local machine)**
+- `git`
+- `uv` (Python package/env manager — install via `winget install astral-sh.uv`
+  on Windows, or see astral.sh/uv). Don't use system `pip`/`venv` directly.
+- `databricks` CLI (`winget install Databricks.DatabricksCLI` on Windows).
+- If you're behind FanDuel's corporate network: expect TLS interception
+  (`CERTIFICATE_VERIFY_FAILED` errors) on both `uv`'s own downloads and the
+  app's own API calls. Fixes are documented inline below — don't skip past
+  them assuming your network is broken.
+
+**Skills to load in Claude Code** (all referenced again inline where relevant)
+- `smi-core:databricks-doctor` — fixes Databricks auth
+- `smi-core:databricks-setup-config` — one-time workspace defaults wizard
+- `smi-core:databricks-setup-project` — scaffolds the project as a proper
+  Databricks Asset Bundle (DAB)
+- `smi-core:databricks-define-resource` / `smi-core:databricks-python-apps` —
+  the app resource (`app.yaml` / `resources/*.app.yml`) format and platform
+  rules (port binding, secrets, permissions)
+
+## What to build for your sport (paste this brief to your own Claude session)
+
+> Build me a small internally-hosted web app called "[Sport] Play Sleuth"
+> that queries [Sport]'s play-by-play data. I want to:
+> - Pick a time period (season/week/date range — whatever your sport's data
+>   is bucketed by) and optionally a division/league/conference filter.
+> - Pick one or more play/event types from the *real* vocabulary the API
+>   exposes (not a guessed list) — no selection means "any type."
+> - Optionally filter to plays with a minimum stat threshold (yards, points,
+>   distance — whatever's the closest equivalent to "yardsGained").
+> - Optionally show only plays/events that include a penalty or foul, and
+>   tell me which team (offense or defense, or the sport's equivalent) it's
+>   attributed to, with an "unattributed" bucket for anything it can't
+>   confidently parse.
+> - See results in a table and export them as CSV.
+> - Keep the API key server-side only — it must never reach the browser.
+> - Deploy it as a Databricks App in the `fdg-analytics` workspace (not a
+>   third-party host), with the API key stored as a Databricks secret, and
+>   grant the right people access.
+>
+> Reference implementation: https://github.com/bruceclouston/college-football-play-sleuth
+> (a working example built the same way, for college football). Read its
+> ONBOARDING.md first — it documents the architecture, what to reuse vs.
+> rewrite, and specific bugs/gotchas already hit and fixed once, so you don't
+> repeat them.
+
+That's the shape of the deliverable — a working local Claude session can take
+that brief plus this document and build the whole thing end to end, including
+the deployment. The rest of this doc is the detail behind each piece of that
+brief.
+
 ## Architecture (what's generic vs. sport-specific)
 
 ```
